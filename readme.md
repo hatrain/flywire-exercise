@@ -2,7 +2,7 @@
 Full Startup instructions:
 1. Open 2 terminals
 2. Open terminal 1 and cd to project root and run "mvn spring-boot:run"
-3. open 2nd terminal and cd to "frontend/flywire-frontend", then run "npm start"
+3. open 2nd terminal and cd to "frontend/flywire-frontend", then run "npm install" and then "npm start"
 
 Backend Interaction Instructions:
 1. To get all active employees: GET http://localhost:8080/employees/active
