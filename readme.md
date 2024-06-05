@@ -1,4 +1,4 @@
---FINISHED INSTRUCTIONS--
+--FINISHED INSTRUCTIONS W/ EXTRA CREDIT--
 Full Startup instructions:
 1. Open 2 terminals
 2. Open terminal 1 and cd to project root and run "mvn spring-boot:run"
