@@ -1,9 +1,11 @@
 package com.flywire.exercise;
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.io.IOException;
 import java.io.InputStream;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,9 +14,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,12 +46,31 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable String id) {
+    public ResponseEntity<Map<String, Object>> getEmployeeByIdWithDirectReports(@PathVariable String id) {
         Employee employee = employees.stream()
             .filter(e -> e.getId().equals(id))
             .findFirst()
             .orElse(null);
-        return employee != null ? ResponseEntity.ok(employee) : ResponseEntity.notFound().build();
+
+        if (employee == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<String> directReportIds = employee.getDirectReports();
+        List<String> directReportNames = employees.stream()
+            .filter(e -> directReportIds.contains(e.getId()))
+            .map(Employee::getName)
+            .collect(Collectors.toList());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", employee.getId());
+        response.put("name", employee.getName());
+        response.put("position", employee.getPosition());
+        response.put("directReports", directReportNames);
+        response.put("active", employee.isActive());
+        response.put("hireDate", employee.getDateHired());
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/hired")
