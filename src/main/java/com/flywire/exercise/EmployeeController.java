@@ -18,6 +18,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
