@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Container from '@mui/material/Container'; // Import Container
+import Typography from '@mui/material/Typography'; // Import Typography
+import Grid from '@mui/material/Grid'; // Import Grid
+import Snackbar from '@mui/material/Snackbar'; // Import Snackbar
+import MuiAlert from '@mui/material/Alert'; // Import Alert
+import RefreshIcon from '@mui/icons-material/Refresh'; // Import RefreshIcon
+import SearchIcon from '@mui/icons-material/Search'; // Import SearchIcon
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'; // Import AddCircleOutlineIcon
+import BlockIcon from '@mui/icons-material/Block'; // Import BlockIcon
 
 function App() {
   const [employees, setEmployees] = useState([]);
@@ -8,6 +19,8 @@ function App() {
   const [endDate, setEndDate] = useState('');
   const [newEmployee, setNewEmployee] = useState({ name: '', position: '', dateHired: '', isActive: true });
   const [deactivateId, setDeactivateId] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false); // Define openSnackbar state
+  const [snackbarMessage, setSnackbarMessage] = useState(''); // Define snackbarMessage state
 
   useEffect(() => {
     fetchActiveEmployees();
@@ -52,36 +65,115 @@ function App() {
     fetchActiveEmployees();
   };
 
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
   return (
-    <div>
-      <h1>Employee Management</h1>
-      <div>
-        <button onClick={fetchActiveEmployees}>Refresh Active Employees</button>
-        {employees.map((employee) => (
-          <div key={employee.id}>{employee.name}</div>
-        ))}
-      </div>
-      <div>
-        <input value={employeeId} onChange={(e) => setEmployeeId(e.target.value)} placeholder="Employee ID" />
-        <button onClick={fetchEmployeeById}>Get Employee by ID</button>
-      </div>
-      <div>
-        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-        <button onClick={fetchEmployeesHiredWithinRange}>Get Employees by Date Range</button>
-      </div>
-      <div>
-        <input value={newEmployee.name} onChange={(e) => setNewEmployee({ ...newEmployee, name: e.target.value })} placeholder="Name" />
-        <input value={newEmployee.position} onChange={(e) => setNewEmployee({ ...newEmployee, position: e.target.value })} placeholder="Position" />
-        <input value={newEmployee.directReports} onChange={(e) => setNewEmployee({ ...newEmployee, directReports: e.target.value.split(',') })} placeholder="Direct Reports (comma-separated)" />
-        <input value={newEmployee.id} onChange={(e) => setNewEmployee({ ...newEmployee, id: e.target.value })} placeholder="ID" />
-        <button onClick={addNewEmployee}>Add New Employee</button>
-      </div>
-      <div>
-        <input value={deactivateId} onChange={(e) => setDeactivateId(e.target.value)} placeholder="Deactivate Employee ID" />
-        <button onClick={deactivateEmployee}>Deactivate Employee</button>
-      </div>
-    </div>
+    <Container maxWidth="md">
+      <Typography variant="h2" gutterBottom>
+        Employee Management
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Button variant="contained" startIcon={<RefreshIcon />} onClick={fetchActiveEmployees}>
+            Refresh Active Employees
+          </Button>
+          {employees.map((employee) => (
+            <Typography key={employee.id}>{employee.name}</Typography>
+          ))}
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            label="Employee ID"
+            value={employeeId}
+            onChange={(e) => setEmployeeId(e.target.value)}
+            variant="outlined"
+          />
+          <Button variant="contained" startIcon={<SearchIcon />} onClick={fetchEmployeeById}>
+            Get Employee by ID
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            variant="outlined"
+          />
+          <TextField
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            variant="outlined"
+          />
+          <Button variant="contained" onClick={fetchEmployeesHiredWithinRange}>
+            Get Employees by Date Range
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Name"
+            value={newEmployee.name}
+            onChange={(e) => setNewEmployee({ ...newEmployee, name: e.target.value })}
+            variant="outlined"
+          />
+          <TextField
+            fullWidth
+            label="Position"
+            value={newEmployee.position}
+            onChange={(e) => setNewEmployee({ ...newEmployee, position: e.target.value })}
+            variant="outlined"
+            margin="normal"
+          />
+          <TextField
+            fullWidth
+            label="Direct Reports (comma-separated)"
+            value={newEmployee.directReports}
+            onChange={(e) => setNewEmployee({ ...newEmployee, directReports: e.target.value.split(',') })}
+            variant="outlined"
+            margin="normal"
+          />
+          <TextField
+            fullWidth
+            label="ID"
+            value={newEmployee.id}
+            onChange={(e) => setNewEmployee({ ...newEmployee, id: e.target.value })}
+            variant="outlined"
+            margin="normal"
+          />
+          <Button variant="contained" startIcon={<AddCircleOutlineIcon />} onClick={addNewEmployee} style={{ marginTop: '20px' }}>
+            Add New Employee
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Deactivate Employee ID"
+            value={deactivateId}
+            onChange={(e) => setDeactivateId(e.target.value)}
+            variant="outlined"
+          />
+          <Button variant="contained" startIcon={<BlockIcon />} onClick={deactivateEmployee}>
+            Deactivate Employee
+          </Button>
+        </Grid>
+      </Grid>
+      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+    </Container>
   );
 }
 

@@ -2,3 +2,4 @@
 target/*
 target/classes/com/flywire/exercise/FlywireSpringBootApp.class
 target/classes/com/flywire/exercise/FlywireSpringBootApp.class
+target/classes/json/data.json
