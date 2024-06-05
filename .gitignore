@@ -1,2 +1,4 @@
 .vscode/settings.json
-/target/
+target/*
+target/classes/com/flywire/exercise/FlywireSpringBootApp.class
+target/classes/com/flywire/exercise/FlywireSpringBootApp.class
