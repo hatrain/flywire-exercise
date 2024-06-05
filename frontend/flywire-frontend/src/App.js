@@ -11,7 +11,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import SearchIcon from '@mui/icons-material/Search';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import BlockIcon from '@mui/icons-material/Block';
-import { Paper } from '@mui/material';
+import { Paper, Divider } from '@mui/material';
 
 function App() {
   const [employees, setEmployees] = useState([]);
@@ -49,7 +49,6 @@ function App() {
       active: true,
       hireDate: today
     };
-
     try {
       const response = await axios.post('http://localhost:8080/employees/', employeeToAdd);
       alert(`Added: ${JSON.stringify(response.data)}`);
@@ -120,6 +119,9 @@ function App() {
             <Button variant="contained" onClick={fetchEmployeesHiredWithinRange}>
               Get Employees by Date Range
             </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Divider style={{ margin: '20px 0', backgroundColor: '#000', height: '2px' }} />
           </Grid>
           <Grid item xs={12}>
             <TextField
