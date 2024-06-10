@@ -1,3 +1,5 @@
+This is the exercise Flywire uses for their interviews, feel free to reference for yours:
+
 --FINISHED INSTRUCTIONS W/ EXTRA CREDIT--
 Full Startup instructions:
 1. Open 2 terminals
