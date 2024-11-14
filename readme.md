@@ -1,4 +1,4 @@
-This is the exercise Flywire uses for their interviews, feel free to reference for yours:
+This is the exercise Flywire uses for their interviews, feel free to reference for yours (they wanted it posted here):
 
 --FINISHED INSTRUCTIONS W/ EXTRA CREDIT--
 Full Startup instructions:
